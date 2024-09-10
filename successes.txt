@@ -1,1 +1,3 @@
 On Mon Sep  9 20:07:18 2024, I successfully compiled the cross-compiler for i686-elf.
+On Mon Sep  9 22:00:58 2024, I ~~copied~~ wrote + compiled the bootstrap assembly stub
+On Mon Sep  9 23:04:24 2024, I finished copying, understood, annotated, and compiled the main kernel!
