@@ -94,17 +94,39 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	terminal_buffer[index] = vga_entry(c,color);
 }
 
+void terminal_checknln(void)
+{
+	if (++terminal_row == VGA_HEIGHT)
+	{
+		terminal_row = terminal_row - 1;
+		for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
+			for (size_t x = 0; x < VGA_WIDTH; x++) {
+				const size_t outindex = y * VGA_WIDTH + x;
+				const size_t inindex = (y + 1) * VGA_WIDTH + x;
+				terminal_buffer[outindex] = terminal_buffer[inindex];
+			}
+		}
+ 	}
+}
+
 void terminal_putchar(char c)
 {
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-
-	/* makes sure to not write outside of the screen because that is impossible
-	also increments the counters for column and row i believe */
-
-	if (++terminal_column == VGA_WIDTH) {
+	/*checks for newlines, if so skips putting the character and adds one to the column, resets the row */
+	if (c == '\n') {
 		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+		terminal_checknln();
+	}
+
+	else {
+		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+
+		/* makes sure to not write outside of the screen because that is impossible
+		also increments the counters for column and row i believe */
+
+		if (++terminal_column == VGA_WIDTH) {
+			terminal_column = 0;
+			terminal_checknln();
+		}
 	}
 }
 
@@ -113,13 +135,8 @@ void terminal_putchar(char c)
 void terminal_write(const char* data, size_t size)
 {
 	for (size_t i = 0; i < size; i++)
-		if (data[i] == '\n') {
-			if (++terminal_row == VGA_HEIGHT)
-				terminal_row = 0;
-		}
-		else {
-			terminal_putchar(data[i]);
-		}
+		terminal_putchar(data[i]);
+
 }
 
 void terminal_writestring(const char* data)
@@ -131,5 +148,5 @@ void kernel_main(void)
 {
 	terminal_initialize();
 
-	terminal_writestring("Hello, colonel world!\nI am on a new line!");
+	terminal_writestring("Hello, colonel world!\nI am on a new line!\n\n\n\n\n\n\n\nehlhekeh\n\n\n\ndhska\nahjd\nhweui\nwhoehwuef\nwhuifga\neu\ngd\n\n\nashdfaskd\nasdfhj\nshd\nf\nsa\nsjdfe\n");
 }
