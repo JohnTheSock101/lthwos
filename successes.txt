@@ -1,3 +1,7 @@
 On Mon Sep  9 20:07:18 2024, I successfully compiled the cross-compiler for i686-elf.
 On Mon Sep  9 22:00:58 2024, I ~~copied~~ wrote + compiled the bootstrap assembly stub
 On Mon Sep  9 23:04:24 2024, I finished copying, understood, annotated, and compiled the main kernel!
+On Mon Sep  9 23:16:02 2024, I successfully compiled the kernel, and grub recognized it as bootable!
+On Mon Sep  9 23:26:56 2024, I created a (theoretically) bootable iso!
+On Tue Sep 10 00:08:03 2024, I booted the os for the first time!
+On Tue Sep 10 14:35:50 2024, I got newline functionality semi-working

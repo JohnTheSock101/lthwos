@@ -98,7 +98,7 @@ void terminal_putchar(char c)
 {
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 
-	/* makes sure to not write outside of the screen because that is impossible 
+	/* makes sure to not write outside of the screen because that is impossible
 	also increments the counters for column and row i believe */
 
 	if (++terminal_column == VGA_WIDTH) {
@@ -113,7 +113,13 @@ void terminal_putchar(char c)
 void terminal_write(const char* data, size_t size)
 {
 	for (size_t i = 0; i < size; i++)
-		terminal_putchar(data[i]);
+		if (data[i] == '\n') {
+			if (++terminal_row == VGA_HEIGHT)
+				terminal_row = 0;
+		}
+		else {
+			terminal_putchar(data[i]);
+		}
 }
 
 void terminal_writestring(const char* data)
@@ -125,5 +131,5 @@ void kernel_main(void)
 {
 	terminal_initialize();
 
-	terminal_writestring("Hello, colonel world!\n");
+	terminal_writestring("Hello, colonel world!\nI am on a new line!");
 }
